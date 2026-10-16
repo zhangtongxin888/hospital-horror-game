@@ -75,10 +75,23 @@ test("emits FAQ structured data and security headers", async () => {
   const response = await render("/faq");
   assert.equal(response.headers.get("x-content-type-options"), "nosniff");
   assert.equal(response.headers.get("x-frame-options"), "DENY");
-  assert.match(response.headers.get("content-security-policy") ?? "", /frame-ancestors 'none'/);
+  const csp = response.headers.get("content-security-policy") ?? "";
+  assert.match(csp, /frame-ancestors 'none'/);
+  // Banner and Native creatives rotate hosts, so the policy uses schemes.
+  for (const directive of ["script-src", "style-src", "img-src", "connect-src", "frame-src", "media-src"]) {
+    const value = csp.match(new RegExp(`${directive} ([^;]+)`))?.[1] ?? "";
+    assert.match(value, /https:/, directive);
+    assert.doesNotMatch(value, /https:\/\/|highperformanceformat|highrevenueformat|effectivecpmnetwork|profitableratecpmnetwork/i, directive);
+  }
+  assert.match(csp, /frame-src [^;]*blob:/);
+  assert.match(csp, /frame-src [^;]*data:/);
+  assert.match(csp, /script-src [^;]*blob:/);
+  assert.match(csp, /script-src [^;]*data:/);
+  assert.doesNotMatch(csp, /popunder|social-bar|socialbar/i);
   const html = await response.text();
   assert.match(html, /FAQPage/);
   assert.match(html, /What should a beginner do first\?/);
+  assert.doesNotMatch(html, /adsterra-popunder|adsterra-social-bar/);
 });
 
 test("returns the custom 404", async () => {

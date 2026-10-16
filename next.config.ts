@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
+import { contentSecurityPolicy } from "./lib/content-security-policy";
 
 const securityHeaders = [
-  { key: "Content-Security-Policy", value: "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-src https:; child-src https: blob:; worker-src 'self' blob:; media-src 'self' data: https:" },
+  { key: "Content-Security-Policy", value: contentSecurityPolicy },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },

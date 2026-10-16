@@ -271,6 +271,29 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--teal); outline
 .related-guides a { display: inline-flex; min-height: 44px; align-items: center; gap: 0.5rem; border: 1px solid var(--line); padding: 0.65rem 0.85rem; color: var(--muted); font-size: 0.84rem; font-weight: 780; }
 .related-guides a:hover { color: var(--text); border-color: var(--teal); }
 
+.ad-placement {
+  width: min(calc(100% - 2.5rem), var(--shell));
+  margin: 1rem auto;
+}
+.ad-placement-top { margin-bottom: 0.35rem; }
+.ad-placement-mid { margin-bottom: 0.5rem; }
+.ad-shell {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  width: 100%;
+}
+.ad-label {
+  color: var(--muted);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ad-leaderboard { display: flex; justify-content: center; width: 100%; }
+.ad-host { margin-inline: auto; }
+
 .site-footer { border-top: 1px solid var(--line); background: #06090d; padding: 4.5rem max(1.25rem, calc((100vw - var(--shell)) / 2)) 1.5rem; }
 .footer-grid { display: grid; gap: 3rem; }
 .site-footer h2 { max-width: 8ch; font-size: 2.5rem; }

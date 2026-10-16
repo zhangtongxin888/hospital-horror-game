@@ -94,6 +94,31 @@ test("emits FAQ structured data and security headers", async () => {
   assert.doesNotMatch(html, /adsterra-popunder|adsterra-social-bar/);
 });
 
+test("places one early banner plus native and rectangle, and leaves legal pages clean", async () => {
+  const home = await (await render("/")).text();
+  const headerAt = home.indexOf('class="site-header"');
+  const topAt = home.indexOf("ad-placement-top");
+  const mainAt = home.indexOf('id="main-content"');
+  const midAt = home.indexOf("ad-placement-mid");
+  const bottomAt = home.indexOf("ad-placement-bottom");
+  const footerAt = home.indexOf("site-footer");
+  assert.ok(headerAt >= 0 && topAt > headerAt && mainAt > topAt, "banner sits after the header and before the article");
+  assert.ok(mainAt < midAt && midAt < bottomAt && bottomAt < footerAt, "native and rectangle follow the article");
+  assert.equal(home.match(/ad-placement-top/g)?.length, 1);
+  assert.equal(home.match(/ad-placement-mid/g)?.length, 1);
+  assert.equal(home.match(/ad-placement-bottom/g)?.length, 1);
+  assert.match(home, /ad-placement-above-fold/);
+  assert.match(home, /ad-host-native/);
+  assert.doesNotMatch(home, /ad-placement-global-fallback|ad-sticky-rail|adsterra-popunder|adsterra-social-bar/);
+
+  const guide = await (await render("/beginner-guide")).text();
+  assert.equal(guide.match(/ad-placement-(top|mid|bottom)/g)?.length, 3);
+
+  const sources = await (await render("/sources")).text();
+  assert.match(sources, /Sources &amp; verification|Sources & verification/i);
+  assert.doesNotMatch(sources, /ad-placement|ad-shell|ad-host|ad-sticky-rail|adsterra-popunder|adsterra-social-bar/);
+});
+
 test("returns the custom 404", async () => {
   const response = await render("/not-a-real-guide");
   assert.equal(response.status, 404);

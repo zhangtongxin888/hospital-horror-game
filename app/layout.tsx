@@ -1,4 +1,4 @@
-import { AdsterraPopunderGate, AdsterraSocialBarGate, AdsterraStickyRail, AdsterraGlobalFallback } from "@/components/ads";
+import { AdsterraArticleBottom, AdsterraArticleMid, AdsterraArticleTop, AdsterraPopunderGate, AdsterraSocialBarGate, AdsterraStickyRail } from "@/components/ads";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter, SiteHeader } from "./_components/site-shell";
@@ -71,12 +71,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <AdsterraPopunderGate />
         <AdsterraSocialBarGate />
         <AdsterraStickyRail />
-        <AdsterraGlobalFallback />
         <a className="skip-link" href="#main-content">Skip to main content</a>
         <StructuredData data={websiteData} />
         <StructuredData data={gameData} />
         <SiteHeader />
+        <AdsterraArticleTop />
         {children}
+        <AdsterraArticleMid />
+        <AdsterraArticleBottom />
         <SiteFooter />
       </body>
     </html>

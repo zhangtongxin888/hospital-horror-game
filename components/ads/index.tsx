@@ -418,17 +418,19 @@ export function AdsterraNative1() {
 }
 
 export function AdsterraArticleTop() {
-  if (!hasLeaderboardSlot()) return null;
+  const cleanAdRoute = useCleanAdRoute();
+  if (cleanAdRoute || !hasLeaderboardSlot()) return null;
 
   return (
-    <div className="ad-placement ad-placement-top">
+    <div className="ad-placement ad-placement-top ad-placement-above-fold">
       <AdsterraLeaderboard />
     </div>
   );
 }
 
 export function AdsterraArticleMid() {
-  if (!hasNativeSlot(runtimeConfig.adsterraNative1Id, runtimeConfig.adsterraNative1ScriptUrl)) return null;
+  const cleanAdRoute = useCleanAdRoute();
+  if (cleanAdRoute || !hasNativeSlot(runtimeConfig.adsterraNative1Id, runtimeConfig.adsterraNative1ScriptUrl)) return null;
 
   return (
     <div className="ad-placement ad-placement-mid">
@@ -438,7 +440,8 @@ export function AdsterraArticleMid() {
 }
 
 export function AdsterraArticleBottom() {
-  if (!hasBannerSlot("300x250")) return null;
+  const cleanAdRoute = useCleanAdRoute();
+  if (cleanAdRoute || !hasBannerSlot("300x250")) return null;
 
   return (
     <div className="ad-placement ad-placement-bottom">
@@ -468,20 +471,13 @@ export function AdsterraToolBottom() {
 }
 
 /**
- * A conservative portfolio fallback for legacy sites whose page templates
- * have little or no inline inventory. It is wired only by the migration
- * tool when source coverage is below the threshold, and remains clean-route
- * aware even though it lives in the root layout.
+ * Legacy body-start leaderboard. Inventory now comes from one
+ * AdsterraArticleTop, one AdsterraArticleMid, and one AdsterraArticleBottom
+ * in the root layout. This stays exported for older templates and renders
+ * nothing so a second mount cannot duplicate those slots.
  */
 export function AdsterraGlobalFallback() {
-  const cleanAdRoute = useCleanAdRoute();
-  if (cleanAdRoute || !hasLeaderboardSlot()) return null;
-
-  return (
-    <div className="ad-placement ad-placement-global-fallback">
-      <AdsterraLeaderboard />
-    </div>
-  );
+  return null;
 }
 
 // Backward-compatible placement API used by older generated page templates.

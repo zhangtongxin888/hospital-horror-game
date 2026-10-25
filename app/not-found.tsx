@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main id="main-content" className="not-found content-shell">
+    <main data-adsterra-clean="" id="main-content" className="not-found content-shell">
       <p className="eyebrow">Case file missing · 404</p>
       <h1>This corridor goes nowhere.</h1>
       <p>The page may have moved, or the guide has not verified enough evidence to publish it.</p>
